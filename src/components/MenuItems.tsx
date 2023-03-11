@@ -52,21 +52,27 @@ const MenuItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin: 0 24px; */
+  margin: 0 24px;
 
   &:first-child {
     margin-top: 64px;
   }
 
-  background: ${({ theme }) => theme.colors.antiFlashWhite};
+  background: #f1f1f1;
   border-radius: 8px;
 
   @media ${device.tablet} {
+    margin: 0;
     width: 223px;
     height: 165px;
     &:first-child {
       margin-top: 0;
     }
+  }
+
+  @media ${device.laptopL} {
+    width: 350px;
+    height: 204px;
   }
 `;
 

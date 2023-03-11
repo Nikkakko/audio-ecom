@@ -1,9 +1,12 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 import mobileHeaderImage from '/assets/home/mobile/image-header.jpg';
+import { TabletHeaderImage } from '../../../public/assets/home/tablet';
+import { DesktopHeaderImage } from '../../../public/assets/home/desktop';
 
 import { useAppSelector } from '../../app/hooks';
 import Button from '../buttons/Button';
+import { device } from '../../styles/media';
 
 type BannerProps = {
   slug: string;
@@ -29,7 +32,22 @@ const Banner = ({ slug }: BannerProps) => {
 
   return (
     <BannerContainer>
-      <BannerImage src={mobileHeaderImage} alt='banner' />
+      <picture>
+        <source
+          media='
+        (min-width: 768px) and (max-width: 1023px),
+        '
+          srcSet={TabletHeaderImage}
+        />
+        <source
+          media='
+        (min-width: 1024px) and (max-width: 2440px),
+        '
+          srcSet={DesktopHeaderImage}
+        />
+
+        <BannerImage src={mobileHeaderImage} alt='banner' />
+      </picture>
       <Content>
         <Title>New Product</Title>
         <ProductTitle>XX99 Mark II Headphones</ProductTitle>
@@ -51,8 +69,14 @@ const Banner = ({ slug }: BannerProps) => {
 
 const BannerContainer = styled.div`
   width: 100%;
-
   position: relative;
+
+  @media (min-width: 768px) {
+  }
+
+  @media ${device.laptopL} {
+    height: 100vh;
+  }
 `;
 
 const BannerImage = styled.img`
@@ -73,6 +97,19 @@ const Content = styled.div`
   align-items: center;
 
   padding: 0 24px;
+
+  @media ${device.tablet} {
+    padding: 0 203px;
+  }
+
+  @media ${device.laptopL} {
+    padding: 0;
+    width: 398px;
+    //set content to left side
+    left: 25%;
+
+    align-items: flex-start;
+  }
 `;
 
 const Title = styled.h1`
@@ -104,6 +141,10 @@ const ProductTitle = styled.h2`
   color: #ffffff;
 
   margin-bottom: 24px;
+
+  @media ${device.laptopL} {
+    text-align: start;
+  }
 `;
 
 const ProductDescription = styled.p`
@@ -112,5 +153,9 @@ const ProductDescription = styled.p`
   mix-blend-mode: normal;
   opacity: 0.75;
   margin-bottom: 28px;
+
+  @media ${device.laptopL} {
+    text-align: start;
+  }
 `;
 export default Banner;

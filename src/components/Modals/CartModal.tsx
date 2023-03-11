@@ -8,6 +8,7 @@ import {
   removeCartItems,
   setProductQuantity,
 } from '../../features/productSlice';
+import { device } from '../../styles/media';
 import { calculateTotalPrice, formatName, formatPrice } from '../../utils/func';
 import Button from '../buttons/Button';
 
@@ -127,6 +128,19 @@ const ModalCard = styled.div`
 
   background-color: #fff;
   border-radius: 8px;
+
+  @media ${device.tablet} {
+    position: absolute;
+    left: 351px;
+    top: 24px;
+    width: 100%;
+    max-width: 377px;
+  }
+
+  @media ${device.laptopL} {
+    left: auto;
+    right: 165px;
+  }
 `;
 
 const ModalHeader = styled.div`

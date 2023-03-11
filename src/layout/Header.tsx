@@ -17,6 +17,8 @@ const Header = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const listItems = ['Home', 'Headphones', 'Speakers', 'Earphones'];
+
   const handleClickOutside:
     | React.MouseEventHandler<HTMLDivElement>
     | undefined = e => {
@@ -42,11 +44,22 @@ const Header = () => {
           )}
         </Link>
       </Items>
+      <NavItems>
+        {listItems.map(item => (
+          <Link
+            to={item === 'Home' ? '/' : `/category/$category`}
+            params={{ category: item.toLowerCase() }}
+            key={item}
+          >
+            {item}
+          </Link>
+        ))}
+      </NavItems>
       <Modal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
       <CartIcon onClick={handleCartClick} />
       {isMenuOpen && (
         <Backdrop ref={backdropRef} onClick={handleClickOutside}>
-          <Menu />
+          <Menu header />
         </Backdrop>
       )}
     </HeaderContainer>
@@ -96,6 +109,30 @@ const HeaderContainer = styled.header`
       left: 5%;
     }
   }
+
+  @media ${device.laptopL} {
+    justify-content: space-between;
+    padding: 35px 165px;
+  }
+`;
+
+const NavItems = styled.nav`
+  display: none;
+
+  @media ${device.laptopL} {
+    display: flex;
+    gap: 34px;
+
+    a {
+      color: ${({ theme }) => theme.colors.white};
+    }
+
+    a {
+      &:hover {
+        color: ${({ theme }) => theme.colors.peru};
+      }
+    }
+  }
 `;
 
 const CartItemsQuantity = styled.div`
@@ -110,6 +147,11 @@ const CartItemsQuantity = styled.div`
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.colors.white};
+
+  @media ${device.laptopL} {
+    top: 26px;
+    right: 155px;
+  }
 `;
 
 const Items = styled.div`
@@ -123,6 +165,13 @@ const Items = styled.div`
   @media ${device.tablet} {
     display: flex;
     gap: 42px;
+  }
+
+  @media ${device.laptopL} {
+    /* justify-content: space-between; */
+    & > svg {
+      display: none;
+    }
   }
 `;
 

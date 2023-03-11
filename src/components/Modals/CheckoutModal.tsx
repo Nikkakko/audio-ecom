@@ -2,7 +2,9 @@ import { createBrowserHistory, useNavigate } from '@tanstack/react-router';
 import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { removeCartItems } from '../../features/productSlice';
+import { device } from '../../styles/media';
 import { IconConfirmation } from '../../svgs';
 import {
   calculateTotalPrice,
@@ -23,16 +25,31 @@ const CheckoutModal = ({ closeModal }: ModalProps) => {
 
   const modalRef = useRef<HTMLDivElement>(null);
   const { cartItems } = useAppSelector(state => state.product);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleClickOutside:
     | React.MouseEventHandler<HTMLDivElement>
     | undefined = e => {
     if (e.target === modalRef.current) {
       closeModal();
+      dispatch(removeCartItems());
     }
   };
   const totalPrice = calculateTotalPrice(cartItems);
   const grandTotal = totalPrice + 50;
+
+  const handleClick = () => {
+    navigate({
+      to: '/',
+    });
+
+    // delete all items in the cart after checkout is complete and redirect to home page
+    // set timeout to allow the modal to close before redirecting
+    setTimeout(() => {
+      dispatch(removeCartItems());
+    }, 500);
+  };
 
   return createPortal(
     <ModalWrapper ref={modalRef} onClick={handleClickOutside}>
@@ -62,7 +79,7 @@ const CheckoutModal = ({ closeModal }: ModalProps) => {
         </Items>
 
         <Button
-          onClick={useGoHome()}
+          onClick={handleClick}
           text='Back to home'
           color='#fff'
           bgColor='#D87D4A'
@@ -87,6 +104,14 @@ const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding: 24px;
+
+  @media ${device.tablet} {
+    padding: 13px 114px;
+  }
+
+  @media ${device.laptopL} {
+    padding: 125px 450px;
+  }
 `;
 
 const ModalCard = styled.div`
@@ -97,12 +122,20 @@ const ModalCard = styled.div`
 
   background-color: #fff;
   border-radius: 8px;
+
+  @media ${device.tablet} {
+    padding: 48px;
+  }
 `;
 
 const Title = styled.h4`
   line-height: 28px;
   letter-spacing: 0.857143px;
   text-align: start;
+
+  @media ${device.tablet} {
+    padding: 0px 208px 0px 0px;
+  }
 `;
 
 const Confirm = styled.p`
@@ -117,6 +150,12 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 23px;
+
+  @media ${device.tablet} {
+    gap: 24px;
+    margin-bottom: 33px;
+    align-items: flex-start;
+  }
 `;
 
 const Items = styled.div`
@@ -125,12 +164,28 @@ const Items = styled.div`
 
   background: #f1f1f1;
   border-radius: 8px;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+
+    margin-bottom: 46px;
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 24px 24px 24px;
+
+  @media ${device.tablet} {
+    & > div {
+      align-items: flex-start;
+
+      & > div {
+        align-items: flex-start;
+      }
+    }
+  }
 `;
 
 const Border = styled.div`
@@ -148,6 +203,10 @@ const OtherItems = styled.p`
   mix-blend-mode: normal;
   opacity: 0.5;
   text-align: center;
+
+  @media ${device.tablet} {
+    text-align: start;
+  }
 `;
 
 const GrandTotal = styled.div`
@@ -164,6 +223,13 @@ const GrandTotal = styled.div`
   margin-bottom: 23px;
 
   gap: 8px;
+
+  @media ${device.tablet} {
+    border-radius: 0px 8px 8px 0px;
+    margin-bottom: 0px;
+
+    justify-content: center;
+  }
 `;
 
 const GrandTotalText = styled.h6`

@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 
 type RadioInputProps = {
@@ -77,4 +78,4 @@ const RadioButton = styled.div<{ checked: boolean }>`
   }
 `;
 
-export default RadioInput;
+export default forwardRef(RadioInput);

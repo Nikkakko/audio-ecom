@@ -2,14 +2,12 @@ import styled from 'styled-components';
 import { device } from '../../styles/media';
 import { BannerAvatar } from '../../../public/assets/shared/mobile';
 import { TabletBannerAvatar } from '../../../public/assets/shared/tablet';
+import ImageBestGear from '/assets/shared/desktop/image-best-gear.jpg';
 
 const HomeFooter = () => {
   return (
     <HomeFooterContainer>
-      <Picture>
-        <source srcSet={TabletBannerAvatar} media='(min-width: 768px)' />
-        <Avatar src={BannerAvatar} alt='avatar' />
-      </Picture>
+      <Avatar src={BannerAvatar} />
 
       <ContentWrapper>
         <Title>
@@ -32,12 +30,25 @@ const HomeFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 96px;
+
+  @media ${device.laptopL} {
+    flex-direction: row-reverse;
+    gap: 125px;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const Avatar = styled.img`
   border-radius: 8px;
   width: 100%;
   height: 100%;
+
+  @media ${device.laptopL} {
+    width: 540px;
+    height: 588px;
+    object-fit: cover;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -45,6 +56,15 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 32px;
+
+  @media ${device.tablet} {
+    padding: 0 58px;
+  }
+
+  @media ${device.laptopL} {
+    max-width: 445px;
+    padding: 0;
+  }
 `;
 
 const Title = styled.h4`
@@ -55,14 +75,28 @@ const Title = styled.h4`
   span {
     color: #d87d4a;
   }
+
+  @media ${device.tablet} {
+    margin-top: 63px;
+    padding: 0 50px;
+  }
+
+  @media ${device.laptopL} {
+    padding: 0;
+    margin: 0;
+    text-align: start;
+    padding: 0 75px 0 0;
+  }
 `;
 
 const Description = styled.p`
   color: #000000;
   text-align: center;
   opacity: 0.5;
-`;
 
-const Picture = styled.picture``;
+  @media ${device.laptopL} {
+    text-align: start;
+  }
+`;
 
 export default HomeFooter;

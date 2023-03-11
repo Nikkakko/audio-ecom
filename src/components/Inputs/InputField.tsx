@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React, { ComponentProps } from 'react';
+import { device } from '../../styles/media';
 
 type Props = ComponentProps<'input'> & {
   label?: string;
@@ -35,6 +36,9 @@ const FormGroup = styled.form`
   flex-direction: column;
 
   gap: 9px;
+
+  @media ${device.tablet} {
+  }
 `;
 
 const Label = styled.label`
@@ -48,6 +52,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
+
   padding: 18px 24px;
   border-radius: 8px;
   border: ${({ error }: { error: boolean }) =>
@@ -59,6 +64,9 @@ const Input = styled.input`
   }
 
   cursor: pointer;
+
+  @media ${device.tablet} {
+  }
 `;
 
 const Error = styled.p`

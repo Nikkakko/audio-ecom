@@ -10,13 +10,13 @@ const CartItem = ({ item }: Props) => {
   return (
     <CartItemWrapper>
       <InfoWrapper>
-        <CartImage src={item.image?.mobile} alt={item.name} />
+        <CartImage src={item?.image?.mobile} alt={item?.name} />
         <div>
-          <CartName>{formatName(item.name)}</CartName>
-          <CartPrice>{formatPrice(item.price)}</CartPrice>
+          <CartName>{formatName(item?.name)}</CartName>
+          <CartPrice>{formatPrice(item?.price)}</CartPrice>
         </div>
       </InfoWrapper>
-      <Quantity>x{item.quantity}</Quantity>
+      <Quantity>x{item?.quantity}</Quantity>
     </CartItemWrapper>
   );
 };

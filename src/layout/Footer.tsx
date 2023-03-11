@@ -9,18 +9,20 @@ const Footer = () => {
   const ListItems = ['Home', 'Headphones', 'Speakers', 'Earphones'];
   return (
     <FooterContainer>
-      <LogoIcon />
-      <List>
-        {ListItems.map((item, i) => (
-          <Link
-            key={i}
-            to={item === 'Home' ? '/' : `/category/$category`}
-            params={item === 'Home' ? {} : { category: item.toLowerCase() }}
-          >
-            <ListItem key={item}>{item}</ListItem>
-          </Link>
-        ))}
-      </List>
+      <DesktopContainer>
+        <LogoIcon />
+        <List>
+          {ListItems.map((item, i) => (
+            <Link
+              key={i}
+              to={item === 'Home' ? '/' : `/category/$category`}
+              params={item === 'Home' ? {} : { category: item.toLowerCase() }}
+            >
+              <ListItem key={item}>{item}</ListItem>
+            </Link>
+          ))}
+        </List>
+      </DesktopContainer>
       <Content>
         <Description>
           Audiophile is an all in one stop to fulfill your audio needs. We're a
@@ -65,6 +67,19 @@ const FooterContainer = styled.footer`
       margin-top: 0;
     }
   }
+
+  @media ${device.laptopL} {
+    padding: 75px 165px;
+  }
+`;
+
+const DesktopContainer = styled.div`
+  @media ${device.laptopL} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const List = styled.ul`
@@ -79,6 +94,10 @@ const List = styled.ul`
     flex-direction: row;
     gap: 34px;
     margin-top: 32px;
+  }
+
+  @media ${device.laptopL} {
+    margin-top: 0;
   }
 `;
 const ListItem = styled.li`
@@ -98,6 +117,10 @@ const Content = styled.div`
 
   @media ${device.tablet} {
     padding: 0;
+  }
+
+  @media ${device.laptopL} {
+    max-width: 540px;
   }
 `;
 
@@ -135,6 +158,9 @@ const Socials = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
+
+  @media ${device.laptopL} {
+  }
 `;
 
 const SocialIcons = styled.div`
@@ -145,6 +171,16 @@ const SocialIcons = styled.div`
 
   svg {
     margin: 0;
+    cursor: pointer;
+
+    &:hover {
+      path {
+        fill: #fbaf85;
+      }
+    }
+  }
+
+  @media ${device.laptopL} {
   }
 `;
 

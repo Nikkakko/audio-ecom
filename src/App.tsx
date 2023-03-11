@@ -1,18 +1,16 @@
-import { GlobalStyle } from './styles/globalStytles';
-import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 
 import {
   Outlet,
   RouterProvider,
-  Link,
   Router,
   Route,
   RootRoute,
 } from '@tanstack/react-router';
+
 import Home from './pages/Home';
 import { Footer, Header } from './layout';
 import { Category, ProductDetail, Checkout } from './pages';
-import ProtectedRoute from './utils/ProtectedRoute';
 
 // Create a root route
 const rootRoute = new RootRoute({
@@ -87,4 +85,5 @@ const Main = styled.main`
   min-height: 100vh;
   background: #fafafa;
 `;
+
 export default App;

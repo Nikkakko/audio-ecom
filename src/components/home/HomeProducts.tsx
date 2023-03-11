@@ -12,6 +12,7 @@ import {
   TabletZx9SpeakerImage,
   TabletZx7SpeakerImage,
 } from '../../../public/assets/home/tablet';
+import { DesktopZx9SpeakerImage } from '../../../public/assets/home/desktop';
 import { useAppSelector } from '../../app/hooks';
 import { Link } from '@tanstack/react-router';
 import { device } from '../../styles/media';
@@ -28,15 +29,13 @@ const HomeProducts = () => {
   return (
     <HomeProductsContainer>
       <Zx9Speaker>
-        <SpeakerImage
-          src={MobileZx9SpeakerImage}
-          srcSet={`${TabletZx9SpeakerImage} 768w`}
-          sizes='(min-width: 768px) 390px, 100vw'
-          alt='zx9-speaker'
-        />
+        <SpeakerImage src={DesktopZx9SpeakerImage} />
         {/* <PatterCircles size={279} /> */}
         <ContentWrapper>
-          <ProductTitle>ZX9 SPEAKER</ProductTitle>
+          <ProductTitle>
+            ZX9 <br />
+            SPEAKER
+          </ProductTitle>
           <Description>
             Upgrade to premium speakers that are phenomenally built to deliver
             truly remarkable sound.
@@ -134,6 +133,20 @@ const Zx9Speaker = styled.div`
   a {
     z-index: 100;
   }
+
+  @media ${device.laptopL} {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 96px 95px 0px 117px;
+    gap: 138px;
+
+    h2,
+    p {
+      text-align: left;
+      padding: 0;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -145,10 +158,28 @@ const ContentWrapper = styled.div`
   @media ${device.tablet} {
     padding: 0 150px;
   }
+
+  @media ${device.laptopL} {
+    padding: 0;
+    max-width: 349px;
+    align-items: flex-start;
+  }
 `;
 
 const SpeakerImage = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+
+  @media ${device.tablet} {
+    width: 197.21px;
+    height: 237px;
+  }
+
+  @media ${device.laptopL} {
+    width: 410.23px;
+    height: 483px;
+  }
 `;
 
 const Earphones = styled.div`
@@ -161,6 +192,10 @@ const Earphones = styled.div`
     flex-direction: row;
     gap: 11px;
   }
+
+  @media ${device.laptopL} {
+    gap: 30px;
+  }
 `;
 const EarphonesImage = styled.div`
   background: url(${MobileEarphones}) no-repeat center;
@@ -172,6 +207,9 @@ const EarphonesImage = styled.div`
   @media ${device.tablet} {
     height: auto;
     width: 50%;
+  }
+
+  @media ${device.laptopL} {
   }
 `;
 
@@ -198,6 +236,10 @@ const ProductWrapper = styled.div`
   @media ${device.tablet} {
     padding: 101px 51px 101px 41px;
   }
+
+  @media ${device.laptopL} {
+    padding: 101px 198px 101px 95px;
+  }
 `;
 
 const ProductTitle = styled.h2`
@@ -207,8 +249,22 @@ const ProductTitle = styled.h2`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
 
+  br {
+    display: none;
+  }
+
   @media ${device.tablet} {
     padding: 0 44px;
+    & br {
+      display: block;
+    }
+  }
+
+  @media ${device.laptopL} {
+    font-size: 56px;
+    line-height: 58px;
+    letter-spacing: 2px;
+    margin-top: 15px;
   }
 `;
 const ProductTitleZx7 = styled(ProductTitle)`
@@ -228,6 +284,10 @@ const Description = styled.p`
   opacity: 0.75;
 
   @media ${device.tablet} {
+  }
+
+  @media ${device.laptopL} {
+    margin-bottom: 16px;
   }
 `;
 
@@ -249,6 +309,14 @@ const Zx7Speaker = styled.div`
     background: url(${TabletZx7SpeakerImage}) no-repeat center;
     background-size: cover;
     padding: 101px 0 130px 62px;
+  }
+
+  @media ${device.laptopL} {
+    h2 {
+      padding: 0;
+    }
+
+    padding: 101px 0 101px 96.5px;
   }
 `;
 export default HomeProducts;

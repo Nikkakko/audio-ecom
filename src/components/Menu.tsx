@@ -13,13 +13,15 @@ import { device } from '../styles/media';
 type categoryProps = {
   category?: string;
   image: string;
+  header?: boolean;
 };
 
 type MenuProps = {
   homePage?: boolean;
+  header?: boolean;
 };
 
-const Menu = ({ homePage }: MenuProps) => {
+const Menu = ({ homePage, header }: MenuProps) => {
   const { product } = useAppSelector(state => state.product);
   const [categories, setCategories] = useState<categoryProps[]>([
     { category: 'headphones', image: HeadphonesImage },
@@ -28,7 +30,7 @@ const Menu = ({ homePage }: MenuProps) => {
   ]);
 
   return (
-    <MenuContainer homePage={homePage}>
+    <MenuContainer homePage={homePage} header={header}>
       {categories.map((category, i) => (
         <MenuItems
           key={i}
@@ -42,7 +44,7 @@ const Menu = ({ homePage }: MenuProps) => {
 
 const MenuContainer = styled.div<MenuProps>`
   position: ${({ homePage }) => (homePage ? 'flex' : 'absolute')};
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme, header }) => (header ? theme.colors.white : null)};
   width: 100%;
   padding: 32px 0px 35px 0px;
   display: flex;
@@ -59,7 +61,13 @@ const MenuContainer = styled.div<MenuProps>`
     align-items: center;
     justify-content: space-between;
     gap: 0px;
-    margin-top: 96px;
+    padding: ${({ header }) => (header ? '89px 39px 67px 40px' : '0px')};
+    margin-top: ${({ header }) => (header ? '0px' : '120px')};
+  }
+
+  @media ${device.laptopL} {
+    gap: 30px;
+    justify-content: center;
   }
 `;
 

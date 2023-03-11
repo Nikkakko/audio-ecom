@@ -7,6 +7,7 @@ import {
   changeCartItemsQuantity,
   removeCartItems,
 } from '../features/productSlice';
+import { device } from '../styles/media';
 import {
   calculateTotalPrice,
   calculateVAT,
@@ -85,6 +86,12 @@ const Container = styled.div`
   background: #fff;
   border-radius: 8px;
   margin-top: 32px;
+
+  @media ${device.laptopL} {
+    max-width: 350px;
+
+    margin-top: 0;
+  }
 `;
 
 const ModalCard = styled.div`

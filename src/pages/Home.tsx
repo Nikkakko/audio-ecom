@@ -1,19 +1,28 @@
-import { useParams } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { Menu, MenuItems } from '../components';
+import { Menu } from '../components';
 import { Banner, HomeProducts } from '../components/home';
 import Loading from '../components/Loading';
 import { getAllProducts } from '../features/asyncthunk';
+import { device } from '../styles/media';
+import {} from '@tanstack/react-router';
+import { setProduct } from '../features/productSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const { product, isLoading } = useAppSelector(state => state.product);
+  const { isLoading, product } = useAppSelector(state => state.product);
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    if (product.length < 1) {
+      dispatch(getAllProducts());
+      localStorage.setItem('product', JSON.stringify(product));
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('product', JSON.stringify(product));
+  }, [product]);
 
   if (isLoading) return <Loading />;
   return (
@@ -37,5 +46,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 24px;
+
+  @media ${device.laptopL} {
+    padding: 0 165px;
+  }
 `;
 export default Home;

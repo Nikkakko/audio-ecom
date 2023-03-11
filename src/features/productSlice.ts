@@ -30,6 +30,11 @@ export const productSlice = createSlice({
       state.isMenuOpen = action.payload;
     },
 
+    // set product
+    setProduct: (state, action: PayloadAction<ProductType[]>) => {
+      state.product = action.payload;
+    },
+
     // quantity increment and decrement based on payload
     setProductQuantity: (state, action: PayloadAction<number>) => {
       state.productQuantity = action.payload;
@@ -112,6 +117,7 @@ export const {
   addCartItems,
   removeCartItems,
   changeCartItemsQuantity,
+  setProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

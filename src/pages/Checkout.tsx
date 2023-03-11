@@ -2,11 +2,13 @@ import { createBrowserHistory, useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import styled from 'styled-components';
-import { useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { InputField, RadioInput } from '../components';
 import Modal from '../components/Modals/CartModal';
 import CheckoutModal from '../components/Modals/CheckoutModal';
 import SummaryDetails from '../components/SummaryDetails';
+import { removeCartItems } from '../features/productSlice';
+import { device } from '../styles/media';
 import { useGoBack } from '../utils/func';
 
 type InputProps = {
@@ -22,28 +24,29 @@ type InputProps = {
 };
 
 const Checkout = () => {
-  const [InputValue, setInputValue] = useState({
-    firstName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    zipCode: '',
-    city: '',
-    country: '',
-    eMoneyNumber: '',
-    eMoneyPin: '',
-  });
-
   const { cartItems } = useAppSelector(state => state.product);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<InputProps>();
+  } = useForm<InputProps>({
+    defaultValues: {
+      firstName: '',
+      email: '',
+      phoneNumber: '',
+      address: '',
+      zipCode: '',
+      city: '',
+      country: '',
+      eMoneyNumber: '',
+      eMoneyPin: '',
+    },
+  });
 
   const [paymentMethod, setPaymentMethod] = useState('e-Money');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -59,7 +62,7 @@ const Checkout = () => {
 
   return (
     <CheckoutContainer>
-      <GoBack onClick={useGoBack}>Go Back</GoBack>
+      <GoBack onClick={useGoBack()}>Go Back</GoBack>
       <Wrapper>
         <h4>Checkout</h4>
 
@@ -69,9 +72,6 @@ const Checkout = () => {
           <InputField
             handleSubmit={handleSubmit(onSubmit)}
             label='Name'
-            {...register('firstName')}
-            placeholder='Alexei'
-            error={errors.firstName?.message}
             {...register('firstName', {
               required: 'Name is required',
               pattern: {
@@ -79,6 +79,8 @@ const Checkout = () => {
                 message: 'Wrong format',
               },
             })}
+            placeholder='Alexei'
+            error={errors.firstName?.message}
           />
 
           <InputField
@@ -112,25 +114,31 @@ const Checkout = () => {
 
         <Details>Shipping Info</Details>
         <ShippingInfo>
-          <InputField
-            handleSubmit={handleSubmit(onSubmit)}
-            label='Your Address'
-            placeholder='1137 Williams Avenue'
-            {...register('address', {
-              required: 'Address is required',
+          <div
+            style={{
+              width: '100%',
+            }}
+          >
+            <InputField
+              handleSubmit={handleSubmit(onSubmit)}
+              label='Your Address'
+              placeholder='1137 Williams Avenue'
+              {...register('address', {
+                required: 'Address is required',
 
-              pattern: {
-                value: /^[A-Za-z0-9\s,'-]*$/i,
-                message: 'Wrong format',
-              },
+                pattern: {
+                  value: /^[A-Za-z0-9\s,'-]*$/i,
+                  message: 'Wrong format',
+                },
 
-              minLength: {
-                value: 5,
-                message: 'Address must have at least 5 characters',
-              },
-            })}
-            error={errors.address?.message}
-          />
+                minLength: {
+                  value: 5,
+                  message: 'Address must have at least 5 characters',
+                },
+              })}
+              error={errors.address?.message}
+            />
+          </div>
 
           <InputField
             handleSubmit={handleSubmit(onSubmit)}
@@ -145,23 +153,62 @@ const Checkout = () => {
             })}
             error={errors.zipCode?.message}
           />
+
+          <InputField
+            handleSubmit={handleSubmit(onSubmit)}
+            label='City'
+            placeholder='New York'
+            {...register('city', {
+              required: 'City is required',
+              pattern: {
+                value: /^[A-Za-z]+$/i,
+                message: 'Wrong format',
+              },
+            })}
+            error={errors.city?.message}
+          />
+
+          <InputField
+            handleSubmit={handleSubmit(onSubmit)}
+            label='Country'
+            placeholder='United States'
+            {...register('country', {
+              required: 'Country is required',
+              pattern: {
+                value: /^[A-Za-z]+$/i,
+                message: 'Wrong format',
+              },
+            })}
+            error={errors.country?.message}
+          />
         </ShippingInfo>
         <Details>Payment Details</Details>
 
         <PaymentDetails>
-          <Label>Payment Method</Label>
-          <RadioInput
-            label='e-Money'
-            checked={paymentMethod === 'e-Money'}
-            setChecked={() => setPaymentMethod('e-Money')}
-            {...register('eMoneyNumber', {})}
-          />
-          <RadioInput
-            label='Cash on Delivery'
-            checked={paymentMethod === 'Cash on Delivery'}
-            setChecked={() => setPaymentMethod('Cash on Delivery')}
-            {...register('eMoneyNumber', {})}
-          />
+          <div>
+            <Label>Payment Method</Label>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}
+          >
+            <RadioInput
+              label='e-Money'
+              checked={paymentMethod === 'e-Money'}
+              setChecked={() => setPaymentMethod('e-Money')}
+              {...register('eMoneyNumber', {})}
+            />
+
+            <RadioInput
+              label='Cash on Delivery'
+              checked={paymentMethod === 'Cash on Delivery'}
+              setChecked={() => setPaymentMethod('Cash on Delivery')}
+              {...register('eMoneyNumber', {})}
+            />
+          </div>
         </PaymentDetails>
         <MoneyDetails>
           <InputField
@@ -208,9 +255,17 @@ const Checkout = () => {
 };
 
 const CheckoutContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 106px 24px 0 24px;
+
+  @media ${device.laptopL} {
+    flex-direction: row;
+    padding: 231px 165px 0 165px;
+    gap: 30px;
+    align-items: flex-start;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -220,6 +275,10 @@ const Wrapper = styled.div`
   margin-top: 24px;
   padding: 24px 24px 31px 24px;
   background: #ffffff;
+
+  @media ${device.laptopL} {
+    margin-top: 0;
+  }
 `;
 
 const GoBack = styled.p`
@@ -227,6 +286,13 @@ const GoBack = styled.p`
 
   mix-blend-mode: normal;
   opacity: 0.5;
+
+  cursor: pointer;
+
+  @media ${device.laptopL} {
+    position: absolute;
+    top: 168px;
+  }
 `;
 
 const Details = styled.p`
@@ -257,6 +323,13 @@ const BillingDetails = styled.div`
   flex-direction: column;
   margin-top: 16px;
   gap: 24px;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const ShippingInfo = styled(BillingDetails)`
@@ -264,10 +337,41 @@ const ShippingInfo = styled(BillingDetails)`
   flex-direction: column;
   margin-top: 16px;
   gap: 24px;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    // not first element
+    & > form:not(:first-child) {
+    }
+
+    //second element
+    & > form:nth-child(2) {
+      width: 48%;
+    }
+
+    //third element
+    & > form:nth-child(3) {
+      width: 48%;
+    }
+
+    //fourth element
+    & > form:nth-child(4) {
+      width: 48%;
+    }
+  }
 `;
 
 const PaymentDetails = styled(BillingDetails)`
   gap: 16px;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: space-between;
+    display: flex;
+  }
 `;
 
 const MoneyDetails = styled(BillingDetails)`
