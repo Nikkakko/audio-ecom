@@ -99,7 +99,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(getAllProducts.fulfilled, (state, action) => {
       const { record } = action.payload;
-      state.product = record;
+      state.product = record || [];
       state.isLoading = false;
       state.isError = false;
     });
